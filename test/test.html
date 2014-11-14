@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>A.P.E.</title>
+	<link rel="stylesheet" href="../lib/mocha.css">
+	<style rel="stylesheet">
+		.wrapper{}
+		#example{
+			width: 1080px;
+			margin: 0 auto;
+		}
+		input,
+		textarea{
+			display: block;
+			width: 300px;
+			height: 26px;
+			margin: 10px;
+			border: solid 1px #999;
+			padding: 2px 5px;
+			box-shadow: 2px 2px 5px #CCC inset;
+			border-radius: 5px;
+		}
+
+		input{
+			line-height: 30px;
+		}
+
+		textarea{
+			width: 600px;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<div id="mocha"></div>
+
+		<div id="example">
+			<h1>Yo , Placeholder!</h1>
+			<input type="text" placeholder="I am a placeholder">
+			<input type="text" placeholder="I am b placeholder">
+			<input type="password" placeholder="I am c placeholder">
+			<input type="text" id="inp" placeholder="I am 3 placeholder">
+			<input type="text" id="guide" placeholder="should not use me for test">
+			<textarea placeholder="I am d placeholder"></textarea>
+		</div>
+	</div>
+	<!--Script Start-->	
+	<script type="text/javascript" src="../lib/jquery.js"></script>
+	<script type="text/javascript" src="../lib/mocha.js"></script>
+	<script type="text/javascript" src="../lib/chai.js"></script>
+	<script type="text/javascript" src="../yo-placeholder.js"></script>
+	<script type="text/javascript">
+
+		$(function(){
+
+			mocha.setup('bdd'); //设置单元测试模式为BDD模式
+
+			chai.Should(); //设置断言模式为 Should模式
+
+			function _support(){
+				return document.createElement('input').placeholder !== undefined;
+			}
+
+			!_support() && describe('Yo-placeholder init Test', function(){
+				var inp;
+
+				before(function(){
+					inp = $('#inp');
+					inp.val('');
+					inp.placeholder();
+					window.console && console.log('test begain');
+				});
+
+				it('should exist placeholder value', function(){
+					inp.val().should.equal(inp.attr('placeholder'));
+				});
+
+				it('should exist data-placeholder', function(){
+					( inp.data('placeholder') ).should.equal(inp.attr('placeholder'));
+				});
+
+			});
+
+			!_support() && describe('Yo-placeholder event Test', function(){
+				var inp;
+
+				before(function(){
+					inp = $('#inp');
+					inp.val('');
+					inp.placeholder();
+					console && console.log('test begain');
+				});
+
+				it('should no placeholder when focus', function(){
+					inp.focus();
+					setTimeout(function(){
+						inp.val().should.equal('');
+					}, 100);
+				});
+
+				it('should no placeholder when typein', function(){
+					inp.focus();
+					inp.val('demo');
+					inp.val().should.equal('demo');
+				});
+
+				it('should show placeholder when input is empty', function(){
+					inp.val('');
+					inp.blur();
+					setTimeout(function(){
+						inp.val().should.equal(inp.attr('placeholder'));
+					}, 100);
+				});
+
+				it('should show placeholder when blur is trigged while empty', function(){
+					inp.focus();
+					inp.val();
+					inp.trigger('blur');
+					setTimeout(function(){
+						inp.val().should.equal(inp.attr('placeholder'));
+					}, 200);
+				});
+			});
+
+			_support() && describe('Yo-placeholder Test', function(){
+				it('Congratulation! Everything is fine! You brower support placeholder, so no need yo-placeholder at all.', function(){
+						return true;
+				});
+			});
+
+			mocha.run();
+
+
+			$('input').placeholder();
+			$('textarea').placeholder();
+		});
+	</script>
+	<!--/Script End-->
+</body>
+</html>

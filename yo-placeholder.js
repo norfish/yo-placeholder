@@ -40,11 +40,6 @@ Placeholder.prototype = {
 
 	init: function(){
 
-		//对于支持placeholder的直接返回，不需初始化
-		if(_supportPlaceholder()){
-			return false;
-		}
-
 		var self = this,
 			elem = $(this.elem),
 			msg = this.msg;
@@ -52,6 +47,11 @@ Placeholder.prototype = {
 		//为了兼容之前的placeholder，以及jvalidate校验
 		if(elem.data('placeholder') !== msg){
 			elem.data('placeholder', msg);
+		}
+
+		//对于支持placeholder的直接返回，不需初始化
+		if(_supportPlaceholder()){
+			return false;
 		}
 
 		self.bindEvents();
