@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>A.P.E.</title>
+	<link rel="stylesheet" href="">
+	<style rel="stylesheet">
+		input,
+		textarea{
+			display: block;
+			width: 300px;
+			height: 26px;
+			margin: 10px;
+			border: solid 1px #999;
+			padding: 2px 5px;
+			box-shadow: 2px 2px 5px #CCC inset;
+			border-radius: 5px;
+		}
+
+		input{
+			line-height: 30px;
+		}
+
+		textarea{
+			width: 600px;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<h1>Hello!</h1>
+		<div id="example">
+			<input type="text" placeholder="I am a placeholder">
+			<input type="text" placeholder="I am b placeholder">
+			<input type="password" placeholder="I am c placeholder">
+			<textarea placeholder="I am d placeholder"></textarea>
+		</div>
+	</div>
+	<!--Script Start-->	
+	<script type="text/javascript" src="./jquery.js"></script>
+	<script type="text/javascript" src="../yo-placeholder.js"></script>
+	<script type="text/javascript">
+
+		$(function(){
+			$('input').placeholder();
+			$('textarea').placeholder();
+		});
+	</script>
+	<!--/Script End-->
+</body>
+</html>
