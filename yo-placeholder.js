@@ -5,6 +5,10 @@
  *
  * Todo
  * 支持密码input的placeholder
+ *
+ * @usage
+ * html: <input type="text" id="demo" placeholder="I am a placeholder" >
+ * js: $('#demo').placeholder();
  */
 
 var _VERSION = "0.0.2";
@@ -164,7 +168,7 @@ $.fn.placeholder = function(){
 
 	$.each(elems, function(i, elem){
 		var $elem = $(elem),
-			msg = $elem.attr('placeholder') || '',
+			msg = $elem.attr('placeholder') || $elem.data('placeholder') || '',
 			ocolor = $elem.css('color') || '#000',
 			isPsw = ($elem.attr('type') === 'password'),
 			ph;
