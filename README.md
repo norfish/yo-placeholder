@@ -1,4 +1,1 @@
-yo-placeholder
-==============
-
-a simple placeholder pollyfill
+适合qunar的简单placeholder polymer

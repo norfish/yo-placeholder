@@ -1,0 +1,1 @@
+require('yo-placeholder.js');
