@@ -11,177 +11,198 @@
  * js: $('#demo').placeholder();
  */
 
-var _VERSION = "0.0.2";
+!function($){
 
-var _createElement = (function() {
-	if (typeof document.createElement !== 'function') {
-	  	// This is the case in IE7, where the type of createElement is "object".
-	  	// For this reason, we cannot call apply() as Object is not a Function.
-	  	return function(){
-	  		return document.createElement(arguments[0]);
-	  	}
-	} else {
-		return function(){
-			return document.createElement.apply(document, arguments);
-		}
-	}
-})();
+    var _VERSION = "0.0.2";
 
-function _supportPlaceholder(){
-	var inp = _createElement('input');
-	//return typeof inp.placeholder !== 'undefined';
-	//return ('placeholder' in inp);
-	return inp.placeholder !== undefined;
-	//return false;
-}
+    var _createElement = (function() {
+        if (typeof document.createElement !== 'function') {
+            // This is the case in IE7, where the type of createElement is "object".
+            // For this reason, we cannot call apply() as Object is not a Function.
+            return function(){
+                return document.createElement(arguments[0]);
+            }
+        } else {
+            return function(){
+                return document.createElement.apply(document, arguments);
+            }
+        }
+    })();
 
-var Placeholder = function(elem, msg, ocolor,isPsw){
+    /**
+     * [_supportPlaceholder determain if the brower support placeholder]
+     * @return {[type]} [description]
+     */
+    function _supportPlaceholder(){
+        var inp = _createElement('input');
+        //return typeof inp.placeholder !== 'undefined';
+        //return ('placeholder' in inp);
+        return inp.placeholder !== undefined;
+    }
 
-	//element
-	this.$elem = $(elem);
+    var Placeholder = function(elem, msg, ocolor,isPsw){
 
-	//placeholder 文字
-	this.msg = msg;
+        //element
+        this.$elem = $(elem);
 
-	//原始颜色
-	this.ocolor = ocolor; 
+        //placeholder 文字
+        this.msg = msg;
 
-	//是否是密码框
-	this.isPsw = isPsw || false;
+        //原始颜色
+        this.ocolor = ocolor; 
 
-	//初始化状态
-	this._inited = false;
-}
+        //是否是密码框
+        this.isPsw = isPsw || false;
 
-Placeholder.prototype = {
-	constructor: Placeholder,
+        //初始化状态
+        this._inited = false;
+    }
 
-	init: function(){
+    Placeholder.prototype = {
+        constructor: Placeholder,
 
-		var $elem = this.$elem,
-			msg = this.msg;
+        init: function(){
 
-		//为了兼容之前的placeholder，以及jvalidate校验
-		if($elem.data('placeholder') !== msg){
-			$elem.data('placeholder', msg);
-		}
+            var $elem = this.$elem,
+                msg = this.msg;
 
-		//对于支持placeholder的直接返回，不需初始化
-		if(_supportPlaceholder()){
-			return false;
-		}
+            //为了兼容之前的placeholder，以及jvalidate校验
+            if($elem.data('placeholder') !== msg){
+                $elem.data('placeholder', msg);
+            }
 
-		this.bindEvents();
+            //对于支持placeholder的直接返回，不需初始化
+            if(_supportPlaceholder()){
+                return false;
+            }
 
-		this.onShow();
+            this.bindEvents();
 
-		//缓存到元素上，方便再次调用
-		$elem.data('yoplaceholder', this);
+            this.onShow();
 
-		this._inited = true;
+            //缓存到元素上，方便再次调用
+            $elem.data('yoplaceholder', this);
 
-		return this;
-	},
+            this._inited = true;
 
-	//如果元素已经初始化过，再调用的时候只改变值，不重新绑定事件
-	reset: function(msg, ocolor, isPsw){
-		this._inited = false;
-		this.msg = msg;
-		this.ocolor = ocolor; //原始颜色
-		this.isPsw = isPsw || false;
+            return this;
+        },
 
-		var $elem = this.$elem;
+        //如果元素已经初始化过，再调用的时候只改变值，不重新绑定事件
+        reset: function(msg, ocolor, isPsw){
+            this._inited = false;
+            this.msg = msg;
+            this.ocolor = ocolor; //原始颜色
+            this.isPsw = isPsw || false;
 
-		//为了兼容之前的placeholder，以及jvalidate校验
-		if($elem.data('placeholder') !== msg){
-			$elem.data('placeholder', msg);
-		}
+            var $elem = this.$elem;
 
-		//对于支持placeholder的直接返回，不需初始化
-		if(_supportPlaceholder()){
-			return false;
-		}
+            //为了兼容之前的placeholder，以及jvalidate校验
+            if($elem.data('placeholder') !== msg){
+                $elem.data('placeholder', msg);
+            }
 
-		this.onShow();
+            //对于支持placeholder的直接返回，不需初始化
+            if(_supportPlaceholder()){
+                return false;
+            }
 
-		//缓存到元素上，方便再次调用
-		$elem.data('yoplaceholder', this);
+            this.onShow();
 
-		this._inited = true;
+            //缓存到元素上，方便再次调用
+            $elem.data('yoplaceholder', this);
 
-		return this;
-	},
+            this._inited = true;
 
-	//展示placeholder
-	showPH: function(){
-		this.$elem.val(this.msg)
-			.css('color', '#AAA');
-	},
-	
-	//触发展示
-	onShow: function(){
-		if( this._shouldPlace() ){
-			this.showPH();
-		}
-	},
+            return this;
+        },
 
-	//触发隐藏
-	onHide: function(){
-		if( this._shoulClean() ){
-			this.hidePH();
-		}
-	},
+        //展示placeholder
+        showPH: function(){
+            this.$elem.val(this.msg)
+                .css('color', '#AAA');
+        },
+        
+        //触发展示
+        onShow: function(){
+            if( this._shouldPlace() ){
+                this.showPH();
+            }
+        },
 
-	//隐藏placeholder
-	hidePH: function(){
-		this.$elem.val('')
-			.css('color', this.ocolor);
-	},
+        //触发隐藏
+        onHide: function(){
+            if( this._shoulClean() ){
+                this.hidePH();
+            }
+        },
 
-	bindEvents: function(){
-		var self = this,
-			$elem = self.$elem;
+        //隐藏placeholder
+        hidePH: function(){
+            this.$elem.val('')
+                .css('color', this.ocolor);
+        },
 
-		$elem.on('focus', function(){
-			self.onHide();
-		});
+        bindEvents: function(){
+            var self = this,
+                $elem = self.$elem;
 
-		$elem.on('blur', function(){
-			self.onShow();
-		});
-	},
+            $elem.on('focus', function(){
+                self.onHide();
+            });
 
-	//是否应该展示placeholder
-	_shouldPlace: function(){
-		return !this._inited || !this.$elem.val().length;
-	},
+            $elem.on('blur', function(){
+                self.onShow();
+            });
+        },
 
-	//是否应该清空内容
-	_shoulClean: function(){
-		return this.$elem.attr('placeholder') === this.$elem.val();
-	}
-};
+        //判断输入框内容是否为空
+        isPlaceHolderEmpty: function(){
+            var self = this,
+                $elem = self.$elem;
+
+            return $.trim($elem.val()) === "" || $elem.val() === self.msg;
+        },
+
+        //是否应该展示placeholder
+        _shouldPlace: function(){
+            return !this._inited || !this.$elem.val().length;
+        },
+
+        //是否应该清空内容
+        _shoulClean: function(){
+            return this.$elem.attr('placeholder') === this.$elem.val();
+        }
+    };
 
 
-$.fn.placeholder = function(){
-	var elems = this;
+    $.fn.placeholder = function(){
+        var elems = this;
 
-	$.each(elems, function(i, elem){
-		var $elem = $(elem),
-			msg = $elem.attr('placeholder') || $elem.data('placeholder') || '',
-			ocolor = $elem.css('color') || '#000',
-			isPsw = ($elem.attr('type') === 'password'),
-			ph;
+        $.each(elems, function(i, elem){
+            var $elem = $(elem),
+                msg = $elem.attr('placeholder') || $elem.data('placeholder') || '',
+                ocolor = $elem.css('color') || '#000',
+                isPsw = ($elem.attr('type') === 'password'),
+                ph;
 
-		//是否已经初始化过
-		if( $elem.data('yoplaceholder') ){
-			ph = $elem.data('yoplaceholder');
-			ph.reset(msg, ocolor, isPsw);
+            //是否已经初始化过
+            if( $elem.data('yoplaceholder') ){
+                ph = $elem.data('yoplaceholder');
+                ph.reset(msg, ocolor, isPsw);
 
-		} else {
-			ph = new Placeholder($elem, msg, ocolor, isPsw);
-			ph.init();
-		}
+            } else {
+                ph = new Placeholder($elem, msg, ocolor, isPsw);
+                ph.init();
+            }
 
-	});
-};
+            var _isDef = function(){
+                return $.trim( $elem.val() ) == "" || $elem.val() == msg;
+            }
+
+            $elem[0].isPlaceHolderEmpty = _isDef;
+
+        });
+    };
+
+}(jQuery);
