@@ -63,13 +63,7 @@
 
         init: function(){
 
-            var $elem = this.$elem,
-                msg = this.msg;
-
-            //为了兼容之前的placeholder，以及jvalidate校验
-            if($elem.data('placeholder') !== msg){
-                $elem.data('placeholder', msg);
-            }
+            this.fixPlaceholder();
 
             //对于支持placeholder的直接返回，不需初始化
             if(_supportPlaceholder()){
@@ -81,7 +75,7 @@
             this.onShow();
 
             //缓存到元素上，方便再次调用
-            $elem.data('yoplaceholder', this);
+            this.$elem.data('yoplaceholder', this);
 
             this._inited = true;
 
@@ -115,6 +109,22 @@
             this._inited = true;
 
             return this;
+        },
+
+        //fix
+        fixPlaceholder: function() {
+            var $elem = this.$elem,
+                msg = this.msg;
+
+            //为了兼容之前的placeholder，以及jvalidate校验
+            if($elem.data('placeholder') !== msg){
+                $elem.data('placeholder', msg);
+            }
+
+            //兼容只有”data-placeholder“这种形式
+            if( !$elem.attr('placeholder') ){
+                $elem.attr('placeholder', msg);
+            }
         },
 
         //展示placeholder
@@ -198,7 +208,7 @@
 
             var _isDef = function(){
                 return $.trim( $elem.val() ) == "" || $elem.val() == msg;
-            }
+            };
 
             $elem[0].isPlaceHolderEmpty = _isDef;
 
